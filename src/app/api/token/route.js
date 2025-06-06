@@ -35,39 +35,92 @@ export async function GET(req) {
     console.log("Access token:", token);
     console.log("Embedded app:", isEmbedded);
 
-    // const shopData = {
-    //   query: `
-    //     {
-    //       shop {
-    //         name
-    //         id
-    //         email
-    //         description
-    //       }
-    //     }
-    //   `,
-    // };
+    const shopData = {
+      query: `
+        {
+          shop {
+            name
+            myshopifyDomain
+            email
+            primaryDomain {
+              url
+              host
+            }
+            plan {
+              displayName
+            }
+          }
+          products(first: 10) {
+            edges {
+              node {
+                id
+                title
+                status
+                vendor
+                tags
+                productType
+                createdAt
+                updatedAt
+                variants(first: 5) {
+                  edges {
+                    node {
+                      id
+                      title
+                      sku
+                      price
+                      inventoryQuantity
+                    }
+                  }
+                }
+                images(first: 2) {
+                  edges {
+                    node {
+                      originalSrc
+                      altText
+                    }
+                  }
+                }
+              }
+            }
+          }
+          themes(first: 5) {
+            edges {
+              node {
+                id
+                name
+                role
+                themeStoreId
+                createdAt
+                updatedAt
+              }
+            }
+          }
+        }
+      `,
+    };
 
-    // // get the theme ids url
-    //   const response = await fetch(
-    //     `https://${shop}/admin/api/2025-01/graphql.json`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "X-Shopify-Access-Token": token,
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(shopData),
-    //     }
-    //   );
-    //   const result = await response.json();
-    //   console.log("all shop Data:", result);
+    // get the theme ids url
+      const response = await fetch(
+        `https://${shop}/admin/api/2025-01/graphql.json`,
+        {
+          method: "POST",
+          headers: {
+            "X-Shopify-Access-Token": token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(shopData),
+        }
+      );
+      const result = await response.json();
+      console.log("all shop Data:", result);
+
+
     // Store shop data in database
     await myDb
       .prepare(
-        "INSERT OR REPLACE INTO shops (shop, access_token, is_embedded) VALUES (?, ?, ?)"
+        "INSERT OR REPLACE INTO shops (shop, access_token, is_embedded, shopdetails) VALUES (?, ?, ?, ?)"
       )
-      .bind(shop, token, isEmbedded ? 1 : 0)
+      .bind(shop, token, isEmbedded ? 1 : 0, JSON.stringify(result))
       .run();
 
     // Register webhooks using the session
