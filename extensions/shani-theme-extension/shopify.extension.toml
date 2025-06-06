@@ -1,0 +1,6 @@
+name = "shani-theme-extension"
+type = "theme"
+
+
+[[blocks]]
+name = "simple_text"

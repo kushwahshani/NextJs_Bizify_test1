@@ -1,0 +1,175 @@
+<div style=" background:{{ block.settings.background }};">
+  {% comment %} show and hide text {% endcomment %}
+  {% if block.settings.checkbox_text %}
+    <p style="color:{{ block.settings.colour }}; font-family: {{ block.settings.font_picker.family }}; padding:{{ block.settings.padding}}px; text-align:{{ block.settings.text-alignment }}; font-size:{{ block.settings.size }};">
+      <a href="{{ block.settings.shani-url }}" style="text-decoration: none; color:{{ block.settings.colour }};">
+        {{ block.settings['simple-text'] }}
+      </a>
+    </p>
+  {% endif %}
+
+  {% comment %} show article {% endcomment %}
+  {% if block.settings.article %}
+    <p>{{ block.settings.article.title }}</p>
+  {% endif %}
+
+  {% comment %} show collection {% endcomment %}
+  {% if block.settings.collection_list %}
+    {% for product in block.settings.collection_list -%}
+      <p>{{ product.title }}</p>
+    {%- endfor %}
+  {% endif %}
+
+  {% comment %} show video {% endcomment %}
+  {% if block.settings.video_embed %}
+    {{ block.settings.video_embed }}
+  {% endif %}
+
+  {% if block.settings.image_with_text_image %}
+    <img src="{{ block.settings.image_with_text_image | image_url: width: 325  }}" height="auto" width="auto">
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Simple Text",
+  "target": "body",
+  "settings": [
+    {
+      "type": "text",
+      "id": "simple-text",
+      "label": "Paragraph",
+      "default": "Welcome To My Simple Text"
+    },
+    {
+      "type": "color",
+      "id": "colour",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "font_picker",
+      "id": "font_picker",
+      "label": "Font Picker",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding",
+      "default": 0
+    },
+    {
+      "type": "text_alignment",
+      "id": "text-alignment",
+      "label": "Text Align",
+      "default": "left"
+    },
+    {
+      "type": "url",
+      "id": "shani-url",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "checkbox_text",
+      "label": "Show Simple Text",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Size",
+      "options": [
+        {
+          "value": "9px",
+          "label": "X-Small"
+        },
+        {
+          "value": "18px",
+          "label": "Small"
+        },
+        {
+          "value": "25px",
+          "label": "Mediam"
+        },
+        {
+          "value": "35px",
+          "label": "Large"
+        },
+        {
+          "value": "45px",
+          "label": "X-Large"
+        },
+        {
+          "value": "60px",
+          "label": "XX-Large"
+        }
+      ],
+      "default": "18px"
+    },
+    {
+      "type": "article",
+      "id": "article",
+      "label": "Artical"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "collection_list",
+      "id": "collection_list",
+      "label": "Collections",
+      "limit": 4
+    },
+    {
+      "type": "color_background",
+      "id": "background",
+      "label": "Background",
+      "default": "linear-gradient(#ffffff, #000000)"
+    },
+    {
+      "type": "html",
+      "id": "video_embed",
+      "label": "Video embed",
+      "info": "Paste your video embed code here"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_with_text_image",
+      "label": "Image"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "inline",
+      "label": "Inline rich text"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "page",
+      "id": "page",
+      "label": "Page"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "richtext",
+      "id": "paragraph",
+      "label": "Paragraph"
+    }
+  ]
+}
+{% endschema %}

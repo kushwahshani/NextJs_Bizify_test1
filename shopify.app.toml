@@ -1,0 +1,19 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "fe56c0cf0d804e83ddbbce365e1c2353"
+name = "shani-app"
+handle = "shani-app"
+application_url = "https://ee5a-27-61-148-133.ngrok-free.app/"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2024-10"
+
+[auth]
+redirect_urls = [ "https://ee5a-27-61-148-133.ngrok-free.app/" ]
+
+[pos]
+embedded = false
